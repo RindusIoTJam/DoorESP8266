@@ -87,8 +87,8 @@ void loop() {
     static bool open_door = false;
     uint32_t currenttime = millis();
     static uint32_t waittime = 0;
-    static const size_t bufferSize = 1000;
-    DynamicJsonBuffer jsonBuffer(bufferSize);
+    static const size_t bufferSize = 1024;
+    //DynamicJsonBuffer jsonBuffer(bufferSize);
 
 
     if (client)
@@ -101,15 +101,15 @@ void loop() {
 			String str = client.readString();
 			Serial.println("read " + str);
 
-
-			JsonObject& rootrev = jsonBuffer.parseObject(str);
+			DynamicJsonDocument rootrev(bufferSize);
+			deserializeJson(rootrev,str);
 			open_door = rootrev["open_request"];
 		  }
-      JsonObject& rootsend = jsonBuffer.createObject();
+      DynamicJsonDocument rootsend(bufferSize);
       rootsend["open_request"] = open_door;
       rootsend["ring_detect"] = ring_detected;
       String output;
-      rootsend.printTo(output);
+      serializeJson(rootsend, output);
       client.write(output.c_str());
       Serial.println("send " + output);
       ring_detected =false;
