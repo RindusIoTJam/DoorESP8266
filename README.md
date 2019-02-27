@@ -1,4 +1,4 @@
-# dooropener ESP8266
+# DoorESP8266
 Automatization of building door opening
 ## Abstract
 
