@@ -20,6 +20,6 @@ install:
 
 script:
   #- arduino --verify --verbose dooropener.ino #if you have any bug this command will show the verbose compiling
-  - arduino --verify dooropener.ino
+  - arduino --verify dooresp8266.ino
 
 cache:
