@@ -2,7 +2,7 @@
 
 DATE=$(date)
 echo "File to build $INOFILE"
-git config --global user.mail "deploy_bot@yopmail.com"
+git config --global user.email "deploy_bot@yopmail.com"
 git config --global user.name "deploy_bot"
 	
 current_branch=$(echo "$(git branch)"  |  tr -d  \*,[:blank:]) 
