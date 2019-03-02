@@ -1,25 +1,35 @@
-image: esp8266  #image configured with esp8266 boards TODO: create esp32 board and Rpi0 board
+image: esp-generic  #image configured with esp8266 boards TODO: create esp32 board and Rpi0 board
 
 matrix:
-  - env: SCRIPT=""
+  - env: SCRIPT=deploy_bin.sh
+
 
 before_install:
+  - export INOFILE=dooresp8266.ino
+  - export BUILD_DIRECTORY=build
+  # if you want to deploy more branches use the following format "master;test;foo;bar"
+  - export DEPLOY_BRANCHES=master
+  - sudo chmod +x deploy_bin.sh
   # - if you change the board (generic,wemos...) check board.txt in order to configure correctly all the parameter of arduino --board
-  # - cd ~ && cd .. && cd .. && find -name boards.txt
+  # - find / -name boards.txt
   # - sudo cat /home/abstruse/.arduino15/packages/esp8266/hardware/esp8266/2.5.0/boards.txt
   - arduino --board esp8266:esp8266:nodemcuv2:xtal=80,eesz=4M --save-prefs
-  - git clone https://github.com/bblanchon/ArduinoJson.git /home/abstruse/Arduino/libraries/ArduinoJson #Version installed with board manager not working
+  
 
 #include here the library to install
 install:
- # - arduino --install-library "ArduinoJson"
-  - arduino --install-library "AutoConnect"
+  - arduino --install-library "ArduinoJson:6.9.0"
+  - arduino --install-library "AutoConnect:0.9.5"
   - arduino --install-library "PageBuilder"
   
   
 
 script:
-  #- arduino --verify --verbose dooropener.ino #if you have any bug this command will show the verbose compiling
-  - arduino --verify dooresp8266.ino
+  - arduino --verify --verbose --preserve-temp-files $INOFILE #if you have any bug this command will show the verbose compiling
+  #- arduino --verify --preserve-temp-files $INOFILE
+  - git config --global user.email "l7p700@yopmail.com"
+  - git config --global user.name "deploy_bot"
+  - cat ~/.gitconfig
+  - ./deploy_bin.sh
 
 cache:
