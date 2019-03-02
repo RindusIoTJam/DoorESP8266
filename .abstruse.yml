@@ -27,9 +27,6 @@ install:
 script:
   - arduino --verify --verbose --preserve-temp-files $INOFILE #if you have any bug this command will show the verbose compiling
   #- arduino --verify --preserve-temp-files $INOFILE
-  - git config --global user.email "l7p700@yopmail.com"
-  - git config --global user.name "deploy_bot"
-  - cat ~/.gitconfig
   - ./deploy_bin.sh
 
 cache:
